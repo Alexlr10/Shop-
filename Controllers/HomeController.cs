@@ -17,11 +17,11 @@ namespace Shop.Controllers {
             public async Task<ActionResult<dynamic>> Authenticate([FromBody] User model) {
                 var user = UserRepository.Get(model.Username, model.Password);
 
-                if (user == null)
+                if (user == null)//Se o usuario retornar nullo mostra a mensagem
                     return NotFound(new { message = "Usuario ou senha inválidos" });
 
                 var token = TokenService.GenerateToken(user);
-                user.Password = "";
+                user.Password = ""; //Esconde a senha do usuario
                 return new {
                     user = user,
                     token = token

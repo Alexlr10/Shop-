@@ -28,13 +28,13 @@ namespace Shop {
             services.AddControllers();
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
-            services.AddAuthentication(x => {
+            services.AddAuthentication(x => { //Avisa a que aplicaçao existe autenticaçao do tipo jwt
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x => {
+            }).AddJwtBearer(x => { //validando o token
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters {
+                x.TokenValidationParameters = new TokenValidationParameters { //Parametros de validaçao
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
@@ -52,12 +52,11 @@ namespace Shop {
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
            
             app.UseCors(x => x
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowAnyOrigin()//Permitindo Origins
+            .AllowAnyMethod()//Permitindo Metodos
+            .AllowAnyHeader());//Permitindo Cabeçarios
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -11,22 +11,22 @@ using System.Threading.Tasks;
 namespace Shop.Services {
     public static class TokenService {
         public static string GenerateToken(User user) {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(Settings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor {
-
+            var tokenHandler = new JwtSecurityTokenHandler();//Gerando um tokenHandler
+            var key = Encoding.ASCII.GetBytes(Settings.Secret);//Encodando a secret
+            var tokenDescriptor = new SecurityTokenDescriptor {//Gerando um tokenDescriptor
+                //Subject para fornecer os dados ao controller
                 Subject = new ClaimsIdentity(new Claim[] {
                     new Claim(ClaimTypes.Name, user.Username.ToString()),
                     new Claim(ClaimTypes.Role, user.Role.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(2),
+                Expires = DateTime.UtcNow.AddHours(2),//Tempo de vida do token
                 SigningCredentials  = 
                 new SigningCredentials(
-                    new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
+                    new SymmetricSecurityKey(key),//Chave para Encriptar 
+                    SecurityAlgorithms.HmacSha256Signature)// Tipo de encriptaçao
             };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var token = tokenHandler.CreateToken(tokenDescriptor);// Armazenando token handler em uma variavel
+            return tokenHandler.WriteToken(token);// retornando tokenHandler como string
         }
     }
 }
